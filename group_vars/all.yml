@@ -1,0 +1,4 @@
+---
+# vars file for ansible-passchanger/
+random_pass: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+root_password_salt: afEMn54tgnji34t5uib4f4vw3

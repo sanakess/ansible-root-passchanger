@@ -1,0 +1,9 @@
+- name: passchanger_random
+  hosts: rootpasschange
+  become: yes
+  vars_prompt:
+  - name: "user"
+    prompt: Type USER to change password
+    private: no
+  roles: 
+  - role: passchanger_random

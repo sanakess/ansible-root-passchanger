@@ -1,0 +1,12 @@
+- hosts: rootpasschange
+  become: yes
+  gather_facts: no
+  vars_prompt:
+  - name: "new_pass"
+    prompt: Type in new password
+    private: yes
+    confirm: yes
+  vars:
+    root_password_salt: afEMnMOBZgYNhoqAcdaSFJkikafiuSlk
+  roles:
+  - role: passchanger
