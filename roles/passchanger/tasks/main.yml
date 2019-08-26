@@ -1,0 +1,20 @@
+- name: show shadow pass
+  shell: cat /etc/shadow | grep "{{ user }}" | cut -f2 -d":"
+  register: shadow_pass
+
+- name: register shadow user line
+  shell: cat /etc/shadow | grep "{{ user }}"
+  register: full_shadow_pass
+
+- name: copy shadow pass to file
+  lineinfile:
+    path: /etc/shadow.old
+    line: "{{ full_shadow_pass.stdout }} {{ ansible_date_time.date }} {{ ansible_date_time.date }} {{ ansible_date_time.hour }}:{{ ansible_date_time.minute }}:{{ ansible_date_time.second }}"
+    state: present
+    create: yes
+  when: shadow_pass.stdout  not in lookup('file', '/etc/shadow.old')
+
+- name: Change root password
+  user:
+    name: root
+    password: "{{ new_pass | password_hash(salt=root_password_salt) }}"
